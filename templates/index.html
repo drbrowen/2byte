@@ -1,0 +1,15 @@
+<html>
+  <head>
+    <title>A 2 byte bus</title>
+  </head>
+  <body>
+    <h1>Two bytes, pick one</h1>
+    <a href="0">Byte 0</a><br />
+    <a href="1">Byte 1</a><br />
+    {% if data %}
+    <p>Data is currently {{data}}</p>
+    {% endif %}
+    {% for bit in bits %}
+    {% if bit %}<img src="static/LED-Red.png" />{% else %}<img src="static/LED-Off.png" />{% endif %}{% endfor %}
+  </body>
+</html>
