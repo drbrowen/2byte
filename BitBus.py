@@ -12,8 +12,13 @@ class BitBus:
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
         self.set_read_mode()
-    
+        # dir=0 for in, 1 for out
+        self.dir = 0
+        
     def set_addr(self,a):
+        if(self.dir == 1):
+            return
+        
         if(a == 0):
             GPIO.output(self.addrbits[1],0)
             GPIO.output(self.addrbits[0],1)
@@ -24,24 +29,34 @@ class BitBus:
             print("Address must be 0 or 1")
 
     def clear_addr(self):
+        if(self.dir == 1):
+            return
         GPIO.output(self.addrbits,0)
             
     def read_all_bits(self):
+        if(self.dir == 1):
+            return 0
+
         retval = 0
         i=0
         for bits in self.databits:
-            retval += GPIO.input(bits)<<i
+            # use "NOT" here, as a button pressed makes the input low
+            if not GPIO.input(bits):
+                retval += 1<<i
+                
             i += 1
 
         return retval
 
     def set_write_mode(self):
+        self.dir = 1
         for addr in self.addrbits:
             GPIO.setup(addr,GPIO.IN)
         for bits in self.databits:
             GPIO.setup(bits,GPIO.OUT)
 
     def set_read_mode(self):
+        self.dir = 0
         for bits in self.databits:
             GPIO.setup(bits,GPIO.IN)
         for addr in self.addrbits:
@@ -64,4 +79,14 @@ class BitBus:
     def cleanup(self):
         GPIO.cleanup()
 
+    def do_write(self,val):
+        self.set_write_mode()
 
+        i = 0;
+        for bit in self.databits:
+            outval = (val>>i)&0x01
+            if(outval == 0):
+                GPIO.output(bit,1)
+            else:
+                GPIO.output(bit,0)
+            i += 1

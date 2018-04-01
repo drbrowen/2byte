@@ -4,14 +4,12 @@
   </head>
   <body>
     <h1>Two bytes, pick one</h1>
-    <button type="button" onclick="window.location.href='/setinput/0'">Set up 0</button>
-    <button type="button" onclick="window.location.href='/setinput/1'">Set up 1</button>
-    <button type="button" onclick="window.location.href='/readstate'">Read</button>
-    <button type="button" onclick="window.location.href='/freebus'">Free bus</button>
     <button type="button" onclick="window.location.href='/0'">Full Read 0</button>
     <button type="button" onclick="window.location.href='/1'">Full Read 1</button>
-    <button type="button" onclick="window.location.href='/start_serial'">Serial Demo</button>
     <br />
+    <button type="button" onclick="window.location.href='/clockup'">Clock Up</button>
+    <button type="button" onclick="window.location.href='/clockdown'">Clock Down</button>
+    
     <h2>Last read in data:</h2>
     {% for bit in bits %}
     {% if bit %}<img src="/static/LED-Red.png" />{% else %}<img src="/static/LED-Off.png" />{% endif %}{% endfor %}
